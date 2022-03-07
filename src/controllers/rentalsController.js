@@ -108,18 +108,6 @@ export async function returnRentals(req, res) {
     
     try{
 
-        const rentalExists = await connection.query(`SELECT * FROM rentals WHERE id = $1`, [id]);
-        if(rentalExists.rows.length === 0) {
-            res.sendStatus(404);
-            return
-        }
-
-        const isCompleted = await connection.query(`SELECT "returnDate" FROM rentals WHERE id = $1`, [id]);
-        if(isCompleted.rows[0].returnDate !== null) {
-            res.sendStatus(400);
-            return
-        }
-
         const gameId = await connection.query(`SELECT "gameId" FROM rentals WHERE id = $1`, [id]);
         const pricePerDay = await connection.query(`SELECT "pricePerDay" FROM games WHERE id = $1`, [gameId.rows[0].gameId]);
         const daysRented = await connection.query(`SELECT "daysRented" FROM rentals WHERE id = $1`, [id]);
@@ -154,18 +142,6 @@ export async function deleteRentals(req, res) {
     const id = req.params.id;
     
     try{
-
-        const rentalExists = await connection.query(`SELECT * FROM rentals WHERE id = $1`, [id]);
-        if(rentalExists.rows.length === 0) {
-            res.sendStatus(404);
-            return
-        }
-
-        const isCompleted = await connection.query(`SELECT "returnDate" FROM rentals WHERE id = $1`, [id]);
-        if(isCompleted.rows[0].returnDate !== null) {
-            res.sendStatus(400);
-            return
-        }
 
        await connection.query(`DELETE FROM rentals WHERE id = $1`, [id]);
 
