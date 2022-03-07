@@ -25,7 +25,7 @@ export async function insertCategory(req, res) {
         const categories = await connection.query(`SELECT * FROM categories;`)
         let id
 
-        if(categories) {
+        if(categories.rows.length > 0) {
             id = categories.rows[categories.rows.length - 1].id + 1;
         } else {
             id = 1;
