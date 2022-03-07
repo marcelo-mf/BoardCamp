@@ -22,7 +22,7 @@ export async function insertCategory(req, res) {
 
     try{
 
-        const categories = await connection.query(`SELECT * FROM categories;`)
+        const categories = await connection.query(`SELECT * FROM categories ORDER BY id;`)
         let id
 
         if(categories.rows.length > 0) {
@@ -45,9 +45,8 @@ export async function insertCategory(req, res) {
 
         await connection.query(`INSERT INTO categories (id, name) VALUES ($1, $2);`, [id, name]);
         
-        console.log(name); 
-        console.log(id);
-        res.send(name);
+        
+        res.sendStatus(201);
 
     } catch(error) {
         console.log(error);

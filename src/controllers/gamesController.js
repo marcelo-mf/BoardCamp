@@ -42,7 +42,7 @@ export async function postGame(req, res) {
             return
         }
 
-        const games = await connection.query(`SELECT * FROM games;`);
+        const games = await connection.query(`SELECT * FROM games ORDER BY id;`);
         if(games.rows.length > 0) {
             id = games.rows[games.rows.length - 1].id + 1;
         } else {
@@ -56,7 +56,7 @@ export async function postGame(req, res) {
             
         )
 
-        res.send('ok');
+        res.sendStatus(201);
 
     } catch(error) {
         console.log(error);

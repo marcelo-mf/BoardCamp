@@ -21,7 +21,7 @@ export async function insertCustomer(req, res) {
             return
         }
 
-        const customers = await connection.query(`SELECT * FROM customers;`);
+        const customers = await connection.query(`SELECT * FROM customers ORDER BY id;`);
         if(customers.rows.length > 0) {
             id = customers.rows[customers.rows.length - 1].id + 1;
         } else {
@@ -35,7 +35,7 @@ export async function insertCustomer(req, res) {
         VALUES ( $1, $2, $3, $4, $5)
         `, [id, customer.name, customer.phone, customer.cpf, customer.birthday])
 
-        res.sendStatus(200);
+        res.sendStatus(201);
 
     } catch(error) {
         console.log(error);
@@ -61,7 +61,14 @@ export async function getCustomersById(req, res) {
 
     try{
 
+        
+
        const customer = await connection.query(`SELECT * FROM customers WHERE id = $1`, [id]);
+
+       if(customer.rows.length === 0) {
+           res.sendStatus(404);
+           return
+       }
 
         res.send(customer.rows);
 
